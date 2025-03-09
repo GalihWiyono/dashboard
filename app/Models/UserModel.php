@@ -50,4 +50,18 @@ class UserModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getApprovedUsers($perPage = 5, $group = 'users')
+    {
+        return $this->where('approval_status', 'approved')
+            ->where('role', 'User')
+            ->paginate($perPage, $group);
+    }
+
+    public function getPendingUsers($perPage = 5, $group = 'users')
+    {
+        return $this->where('approval_status', 'pending')
+            ->where('role', 'User')
+            ->paginate($perPage, $group);
+    }
 }

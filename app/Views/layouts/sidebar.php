@@ -1,9 +1,11 @@
+<?php $currentUrl = service('request')->getPath(); ?>
+
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
             <a href="dashboard" class="text-nowrap logo-img">
-                <img src="<?= base_url('assets/images/logo-mi.png') ?>" width="180" alt="" />
+                <img src="<?= base_url('assets/images/logos/dark-logo.svg') ?>" width="180" alt="" />
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
@@ -26,109 +28,33 @@
                 </li>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Event</span>
+                    <span class="hide-menu">Issues</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('event') ?>" aria-expanded="false">
+                    <a class="sidebar-link" href="<?= base_url('issue') ?>" aria-expanded="false">
                         <span>
-                            <i class="ti ti-calendar-event"></i>
+                            <i class="ti ti-list-details"></i>
                         </span>
-                        <span class="hide-menu">Event</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('kategori') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-category"></i>
-                        </span>
-                        <span class="hide-menu">Kategori</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('addons') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-playlist-add"></i>
-                        </span>
-                        <span class="hide-menu">Addons</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('additional') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-list"></i>
-                        </span>
-                        <span class="hide-menu">Additional Item</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('promo') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-discount-2"></i>
-                        </span>
-                        <span class="hide-menu">Promo</span>
+                        <span class="hide-menu">All Issue</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Peserta</span>
+                    <span class="hide-menu">Users</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('preregister') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-at"></i>
-                        </span>
-                        <span class="hide-menu">Pre-Register Email</span>
+                    <a class="sidebar-link <?= (strpos($currentUrl, 'users') === 0) ? 'active' : '' ?>" href="<?= base_url('users') ?>" aria-expanded="false">
+                        <span><i class="ti ti-users"></i></span>
+                        <span class="hide-menu">All Users</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('akun') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-user"></i>
-                        </span>
-                        <span class="hide-menu">Akun</span>
+                    <a class="sidebar-link <?= (strpos($currentUrl, 'pending-users') === 0) ? 'active' : '' ?>" href="<?= base_url('pending-users') ?>" aria-expanded="false">
+                        <span><i class="ti ti-user-exclamation"></i></span>
+                        <span class="hide-menu">Pending Users</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('pendaftaran') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-user-plus"></i>
-                        </span>
-                        <span class="hide-menu">Pendaftaran</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('peserta') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-users"></i>
-                        </span>
-                        <span class="hide-menu">Peserta</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('itempeserta') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-clipboard-list"></i>
-                        </span>
-                        <span class="hide-menu">Peserta Item</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('invoice') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-file-invoice"></i>
-                        </span>
-                        <span class="hide-menu">Invoice</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="<?= base_url('payment') ?>" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-credit-card"></i>
-                        </span>
-                        <span class="hide-menu">Payment</span>
-                    </a>
-                </li>
-                <li class="nav-small-cap">
+                <!-- <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">System</span>
                 </li>
@@ -208,7 +134,7 @@
                         </svg>
                         <span class="hide-menu">Encrypter - Decrypter</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
