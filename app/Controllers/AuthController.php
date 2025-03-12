@@ -46,15 +46,23 @@ class AuthController extends BaseController
             return redirect()->to('/');
         }
 
+        $role = $user['role'];
+
         // Set session jika login berhasil
         $session->set([
             'user_id'   => $user['id'],
             'username'  => $user['username'],
             'email'     => $user['email'],
+            'role'      => $role,
             'logged_in' => true
         ]);
+        
 
-        return redirect()->to('/dashboard');
+        if($role === "Admin") {
+            return redirect()->to('/dashboard');
+        } else {
+            return redirect()->to('/issue');
+        }
     }
 
     public function registerAccount()

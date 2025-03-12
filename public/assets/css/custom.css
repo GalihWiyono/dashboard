@@ -1,0 +1,13 @@
+@media screen and (max-width: 768px) {
+    th:nth-child(3), td:nth-child(3), /* Sembunyikan Email */
+    th:nth-child(5), td:nth-child(5) { /* Sembunyikan Alamat */
+        display: none;
+    }
+}
+
+#comment-section {
+    height: 500px;  /* Tetap 500px */
+    overflow-y: auto; /* Bisa di-scroll */
+    display: flex;
+    flex-direction: column; /* Agar komentar terbaru ada di bawah */
+}
