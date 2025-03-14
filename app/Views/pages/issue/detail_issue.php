@@ -45,9 +45,9 @@
                             <label for="detail-issue">Issue</label>
                         </div>
 
-                        <?php if ($session->get('role') === 'admin') : ?>
+                        <?php if ($session->get('role') === 'Admin') : ?>
                             <div class="form-floating mb-3">
-                                <input class="form-control" name="user" id="detail-user" value="<?= $issue['user'] ?>" type="text" placeholder="User">
+                                <input class="form-control" name="user" id="detail-user" value="<?= $issue['name'] ?>" type="text" placeholder="User" disabled>
                                 <label for="detail-user">User</label>
                             </div>
                         <?php endif; ?>
@@ -91,23 +91,81 @@
                         <div id="comment-section" class="border rounded p-3">
                             <?php foreach ($comments as $comment) : ?>
                                 <div class="comment-box border-bottom pb-2 mb-2">
-                                    <div class="fw-semibold"><?= htmlspecialchars($comment['name']) ?></div>
-                                    <div class="text-muted small"><?= date('H:i', strtotime($comment['created_at'])) ?></div>
-                                    <p class="mb-0"><?= nl2br(htmlspecialchars($comment['message'])) ?></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-semibold"><?= ucwords(strtolower(htmlspecialchars($comment['name']))) ?></span>
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-muted small me-2"><?= date('d/m/Y, H:i', strtotime($comment['updated_at'])) ?></span>
+                                            <?php if ($session->get('role') === 'Admin' && $comment['user_id'] === $session->get('user_id')) : ?>
+                                                <button class="btn btn-sm btn-outline-secondary me-2 edit-comment" data-id="<?= $comment['id'] ?>">
+                                                    <i class="ti ti-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger delete-comment" data-id="<?= $comment['id'] ?>">
+                                                    <i class="ti ti-trash"></i>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0"><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
                                 </div>
                             <?php endforeach; ?>
                         </div>
 
                         <?php if ($session->get('role') === 'Admin') : ?>
-                            <div class="mt-3">
-                                <textarea id="new-comment" class="form-control mb-2" rows="2" placeholder="Tulis komentar..."></textarea>
-                                <button id="send-comment" class="btn btn-primary w-100">Kirim</button>
-                            </div>
+                            <form action="<?= base_url('issue/' . $issue['id'] . '/comments')?>" method="POST" id="comment-form" class="mt-3">
+                                <input type="hidden" id="issue-id" name="issue_id" value="<?= htmlspecialchars($issue['id']) ?>">
+                                <textarea id="new-comment" name="comment" class="form-control mb-2" rows="3" placeholder="Write your comment here..." required></textarea>
+                                <button type="submit" id="send-comment" class="btn btn-primary w-100">Submit</button>
+                            </form>
                         <?php endif; ?>
                     </div>
 
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit Commentar -->
+<form id="edit-comment-form" method="post">
+    <div class="modal fade" id="editCommentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Comment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-comment-id" name="comment_id">
+                    <textarea id="edit-comment-text" name="comment" class="form-control" rows="6"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" id="save-comment" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Modal Delete Commentar -->
+
+<div class="modal fade" id="deleteCommentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="delete-comment-form" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Comment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this comment?</p>
+                    <input type="hidden" id="delete-comment-id" name="comment_id">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

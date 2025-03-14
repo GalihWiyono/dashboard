@@ -2,6 +2,8 @@
 
 <?= $this->section('content') ?>
 
+<?php $session = session(); ?>
+
 <?php if (session()->has('flash')) : ?>
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
         <div id="toastNotification" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
@@ -24,9 +26,16 @@
                     <h5 class="card-title fw-semibold mb-0">All Issues</h5>
                 </div>
                 <div class="col-12 col-md-auto">
-                    <a href="<?= site_url('issue/create') ?>" class="btn btn-secondary rounded-2 fw-semibold">
-                        <i class="ti ti-plus"></i> Add Issue
-                    </a>
+                    <?php if ($session->get('role') === 'Admin') : ?>
+                        <a class="btn btn-success rounded-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#exportIssueModal">
+                            <i class="ti ti-file-arrow-right"></i> Export Issue
+                        </a>
+                    <?php endif; ?>
+                    <?php if ($session->get('role') === 'User') : ?>
+                        <a href="<?= site_url('issue/create') ?>" class="btn btn-secondary rounded-2 fw-semibold">
+                            <i class="ti ti-plus"></i> Add Issue
+                        </a>
+                    <?php endif; ?>
                 </div>
                 <div class="col-12 col-md-auto">
                     <form action="<?= site_url('issue') ?>" method="GET" class="row gx-2 align-items-center">
@@ -43,8 +52,6 @@
                 </div>
             </div>
 
-
-            <?php $session = session(); ?>
             <div class="table-responsive">
                 <table class="table text-nowrap mb-0 align-middle text-center w-100">
                     <thead class="text-dark fs-4">
@@ -53,7 +60,7 @@
                             <th>Title</th>
                             <th>Message</th>
                             <th>Issue</th>
-                            <?php if ($session->get('role') === 'admin') : ?>
+                            <?php if ($session->get('role') === 'Admin') : ?>
                                 <th>User</th>
                             <?php endif; ?>
                             <th>Action</th>
@@ -178,6 +185,36 @@
 </div>
 
 <!-- Modal Add Issue -->
+
+<!-- Modal Export Issue -->
+<div class="modal fade" id="exportIssueModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="exportForm" action="<?= base_url('/issue/export') ?>" method="GET">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportModalLabel">Export Issue</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="startDate" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="startDate" name="start_date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="endDate" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="endDate" name="end_date">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Export</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Export Issue -->
+
 
 <!-- Modal Error -->
 <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorLabel" aria-hidden="true">

@@ -53,12 +53,13 @@ class AuthController extends BaseController
             'user_id'   => $user['id'],
             'username'  => $user['username'],
             'email'     => $user['email'],
+            'name'      => $user['name'],
             'role'      => $role,
             'logged_in' => true
         ]);
-        
 
-        if($role === "Admin") {
+
+        if ($role === "Admin") {
             return redirect()->to('/dashboard');
         } else {
             return redirect()->to('/issue');
@@ -109,5 +110,11 @@ class AuthController extends BaseController
 
         $session->setFlashdata('success', 'Registration successful. Please wait until admin approve!');
         return redirect()->to('/register');
+    }
+
+    public function logoutAccount()
+    {
+        session()->destroy();
+        return redirect()->to(base_url('/'));
     }
 }

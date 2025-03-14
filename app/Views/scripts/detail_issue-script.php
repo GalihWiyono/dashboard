@@ -26,6 +26,21 @@
             map.setView([latitude, longitude], 15);
         }
 
+        $(".edit-comment").click(function() {
+            let commentId = $(this).data("id");
+            let commentText = $(this).closest(".comment-box").find("p").text().trim();
+
+            $("#edit-comment-form").attr("action", "<?= base_url('comment/update/') ?>" + commentId);
+            $("#edit-comment-text").val(commentText);
+            $("#editCommentModal").modal("show");
+        });
+
+        $(".delete-comment").click(function() {
+            let commentId = $(this).data("id");
+            $("#delete-comment-form").attr("action", "<?= base_url('comment/delete/') ?>" + commentId);
+            $("#deleteCommentModal").modal("show");
+        });
+
         if ($('#toastNotification').hasClass("show")) {
             if ($('#toast-header').hasClass("bg-success")) {
                 setTimeout(function() {

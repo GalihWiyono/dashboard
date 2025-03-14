@@ -3,8 +3,11 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\CommentModel;
 use App\Models\IssueModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class IssuesController extends BaseController
 {
@@ -20,7 +23,7 @@ class IssuesController extends BaseController
             ->join('users', 'users.id = issues.user_id');
 
         // Jika bukan admin, filter berdasarkan user_id
-        if ($role !== 'admin') {
+        if ($role !== 'Admin') {
             $query->where('issues.user_id', $userId);
         }
 
@@ -153,9 +156,9 @@ class IssuesController extends BaseController
         // Cek role user
         $userRole = session()->get('role');
 
-        if ($userRole === 'admin') {
+        if ($userRole === 'Admin') {
             // Jika admin, join dengan tabel users untuk mendapatkan nama user
-            $issue = $issueModel->select('issues.*, users.name as username')
+            $issue = $issueModel->select('issues.*, users.name as name')
                 ->join('users', 'users.id = issues.user_id', 'left')
                 ->where('issues.id', $id)
                 ->first();
@@ -169,22 +172,9 @@ class IssuesController extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        $comments = [
-            ['name' => 'John Doe', 'message' => 'Komentar pertama!', 'created_at' => '2024-03-11 14:30:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:35:00'],
-            ['name' => 'Jane Smith', 'message' => 'Halo semuanya!', 'created_at' => '2024-03-11 14:37:00'],
-        ];
-    
+        $commentModal = new CommentModel();
+        $comments = $commentModal->getCommentsByIssueId($issue['id']);
+
         return view('pages/issue/detail_issue', ['issue' => $issue, 'comments' => $comments]);
     }
 
@@ -278,5 +268,61 @@ class IssuesController extends BaseController
         ]);
 
         return redirect()->to('/issue/edit/' . $id);
+    }
+
+    public function exportIssues()
+    {
+        $startDate = $this->request->getGet('start_date');
+        $endDate = $this->request->getGet('end_date');
+
+        $issueModel = new IssueModel();
+        $issues = $issueModel->getFilteredIssues($startDate, $endDate);
+        $generatedExcel = $this->generateExcel($issues);
+    }
+
+    function generateExcel($issues)
+    {
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header
+        $headers = ['ID', 'Title', 'Issue', 'Message', 'Location', 'Name', 'Email', 'Created At'];
+        $columns = range('A', 'H'); // Kolom dari A sampai G
+
+        foreach ($columns as $index => $column) {
+            $sheet->setCellValue($column . '1', $headers[$index]);
+
+            // Buat Header Bold
+            $sheet->getStyle($column . '1')->getFont()->setBold(true);
+
+            // Auto-fit Column Width
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        // Data
+        $row = 2;
+        foreach ($issues as $issue) {
+            $sheet->setCellValue('A' . $row, $issue['id']);
+            $sheet->setCellValue('B' . $row, $issue['title']);
+            $sheet->setCellValue('C' . $row, $issue['issue']);
+            $sheet->setCellValue('D' . $row, $issue['message']);
+            $sheet->setCellValue('E' . $row, $issue['latitude'] . ", " . $issue['longitude']);
+            $sheet->setCellValue('F' . $row, $issue['name']);
+            $sheet->setCellValue('G' . $row, $issue['email']);
+            $sheet->setCellValue('H' . $row, $issue['created_at']);
+            $row++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'Issue_Report_' . date('Y-m-d') . '.xlsx';
+
+        // Set header untuk download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
     }
 }

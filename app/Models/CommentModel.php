@@ -4,24 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class IssueModel extends Model
+class CommentModel extends Model
 {
-    protected $table            = 'issues';
+    protected $table            = 'comments';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'user_id',
-        'title',
-        'message',
-        'issue',
-        'latitude',
-        'longitude',
-        'path_photo',
-        'path_video'
-    ];
+    protected $allowedFields    = ['issue_id', 'user_id', 'comment'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -53,16 +44,14 @@ class IssueModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getFilteredIssues($startDate = null, $endDate = null)
+    public function getCommentsByIssueId($issueId)
     {
-        $query = $this->select('issues.*, users.name as name, users.email')
-            ->join('users', 'users.id = issues.user_id');
+        return $this->select('comments.*, users.name')
+                    ->join('users', 'users.id = comments.user_id')
+                    ->where('comments.issue_id', $issueId)
+                    ->where('comments.deleted_at', null) 
+                    ->orderBy('comments.created_at', 'DESC')
+                    ->findAll();
+    }
     
-        if (!empty($startDate) && !empty($endDate)) {
-            $query->where('issues.created_at >=', $startDate)
-                  ->where('issues.created_at <=', $endDate);
-        }
-    
-        return $query->findAll();
-    }    
 }
