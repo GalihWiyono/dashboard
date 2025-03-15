@@ -53,6 +53,11 @@ class IssueModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function getIssueCount()
+    {
+        return $this->countAllResults();
+    }
+
     public function getFilteredIssues($startDate = null, $endDate = null)
     {
         $query = $this->select('issues.*, users.name as name, users.email')

@@ -51,6 +51,11 @@ class UserModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function getUserCount()
+    {
+        return $this->countAllResults();
+    }
+
     public function getApprovedUsers($perPage = 5, $group = 'users')
     {
         return $this->where('approval_status', 'approved')

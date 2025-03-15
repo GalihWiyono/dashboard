@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="<?= base_url('assets/css/dashboards.css') ?>" />
   <link rel="stylesheet" href="<?= base_url('assets/css/select2.css') ?>" />
   <link rel="stylesheet" href="<?= base_url('assets/css/custom.css') ?>" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.min.css" rel="stylesheet">
   <meta name="csrf-token" content="<?= csrf_hash() ?>">

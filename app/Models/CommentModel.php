@@ -44,6 +44,11 @@ class CommentModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function getCommentCount()
+    {
+        return $this->countAllResults();
+    }
+
     public function getCommentsByIssueId($issueId)
     {
         return $this->select('comments.*, users.name')

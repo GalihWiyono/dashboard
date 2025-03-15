@@ -36,7 +36,7 @@ $role = $session->get('role');
                         <span class="hide-menu">Issues</span>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="<?= base_url('issue') ?>" aria-expanded="false">
+                        <a class="sidebar-link <?= (strpos($currentUrl, 'issue') !== false) ? 'active' : '' ?>" href="<?= base_url('issue') ?>" aria-expanded="false">
                             <span>
                                 <i class="ti ti-list-details"></i>
                             </span>
@@ -48,13 +48,15 @@ $role = $session->get('role');
                         <span class="hide-menu">Users</span>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link <?= (strpos($currentUrl, 'users') === 0) ? 'active' : '' ?>" href="<?= base_url('users') ?>" aria-expanded="false">
+                        <a class="sidebar-link <?= (strpos($currentUrl, 'users') !== false && strpos($currentUrl, 'users/pending') === false) ? 'active' : '' ?>"
+                            href="<?= base_url('users') ?>" aria-expanded="false">
                             <span><i class="ti ti-users"></i></span>
                             <span class="hide-menu">All Users</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link <?= (strpos($currentUrl, 'pending-users') === 0) ? 'active' : '' ?>" href="<?= base_url('pending-users') ?>" aria-expanded="false">
+                        <a class="sidebar-link <?= (strpos($currentUrl, 'users/pending') !== false) ? 'active' : '' ?>"
+                            href="<?= base_url('users/pending') ?>" aria-expanded="false">
                             <span><i class="ti ti-user-exclamation"></i></span>
                             <span class="hide-menu">Pending Users</span>
                         </a>

@@ -115,7 +115,7 @@ class UsersController extends BaseController
             'message' => $status ? 'User approved successfully.' : 'Failed to approve user.'
         ]);
 
-        return redirect()->to(base_url('/pending-users'));
+        return redirect()->to(base_url('users/pending'));
     }
 
     public function rejectUser($id) {
@@ -128,6 +128,6 @@ class UsersController extends BaseController
             'message' => $status ? 'User rejected successfully.' : 'Failed to reject user.'
         ]);
 
-        return redirect()->to(base_url('/pending-users'));
+        return redirect()->to(base_url('users/pending'));
     }
 }

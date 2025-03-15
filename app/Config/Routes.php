@@ -40,6 +40,8 @@ $routes->group('comment', ['filter' => 'auth:Admin'], function ($routes) {
 
 $routes->group('dashboard', ['filter' => 'auth:Admin'], function ($routes) {
     $routes->get('', 'DashboardController::index');
+    $routes->get('getchart', 'DashboardController::getChart');
+
 });
 
 $routes->group('users', ['filter' => 'auth:Admin'], function ($routes) {
