@@ -36,6 +36,8 @@ class IssuesController extends BaseController
                 ->groupEnd();
         }
 
+        $query->orderBy('issues.created_at', 'desc');
+
         $data = [
             'issues' => $query->paginate(5, 'users'),
             'pager' => $issueModel->pager,
