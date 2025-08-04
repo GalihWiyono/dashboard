@@ -3,7 +3,11 @@
 <script>
     $(document).ready(function() {
 
-        loadMap();
+        var userRole = "<?= $_SESSION['role'] ?>";
+        
+        if (userRole === 'Admin') {
+            loadMap();
+        }
 
         function loadMap() {
             var latitude = <?= json_encode($issue['latitude']) ?>;

@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard</title>
-  <link rel="shortcut icon" type="image/jpg" href="assets/images/icon.jpg" />
+  <link rel="shortcut icon" type="image/jpg" href="assets/images/logo.jpg" />
   <link rel="stylesheet" href="assets/css/styles.min.css" />
   <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
