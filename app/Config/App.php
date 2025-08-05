@@ -16,21 +16,21 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    // public string $baseURL = 'https://9ba2-119-82-245-185.ngrok-free.app/';
+    public string $baseURL = 'http://localhost:8080/';
 
-    public string $baseURL;
+    // public string $baseURL;
 
-    public function __construct()
-    {
-        $host = $_SERVER['HTTP_HOST'] ?? 'localhost:8080';
+    // public function __construct()
+    // {
+    //     $host = $_SERVER['HTTP_HOST'] ?? 'localhost:8080';
     
-        // Jika di localhost, pakai HTTP, selain itu pakai HTTPS
-        $protocol = (str_contains($host, 'localhost') || str_contains($host, '127.0.0.1')) ? "http://" : "https://";
+    //     // Jika di localhost, pakai HTTP, selain itu pakai HTTPS
+    //     $protocol = (str_contains($host, 'localhost') || str_contains($host, '127.0.0.1')) ? "http://" : "https://";
     
-        $this->baseURL = $protocol . $host . '/';
+    //     $this->baseURL = $protocol . $host . '/';
     
-        parent::__construct();
-    }
+    //     parent::__construct();
+    // }
     
 
     /**
